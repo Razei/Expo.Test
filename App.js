@@ -1,27 +1,41 @@
-import React from "react";
-import { View, Text, SafeAreaView, StyleSheet } from "react-native";
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useFonts } from 'expo-fonts';
+
+// https://www.youtube.com/watch?v=_ivIUCSOZ78
+
+const Stack = createStackNavigator();
+
+import Home from './screens/Home';
+import Details from './screens/Details';
+
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: 'transparent',
+  },
+};
 
 const App = () => {
+  const [loaded] = useFonts({
+    InterBold: require('./assets/fonts/Inter-Bold.ttf'),
+    InterSemiBold: require('./assets/fonts/Inter-SemiBold.ttf'),
+    InterMedium: require('./assets/fonts/Inter-Mediun.ttf'),
+    InterRegular: require('./assets/fonts/Inter-Regular.ttf'),
+    InterLight: require('./assets/fonts/Inter-Light.ttf'),
+  });
   return (
-    <SafeAreaView style={styles.wrapper}> 
-      <View style={styles.container}>
-        <Text>Current Weather</Text>
-      </View>
-    </SafeAreaView>
-  )
-
-}
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'pink',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  wrapper: {
-    flex: 1
-  }
-});
+    <NavigationContainer theme={theme}>
+      <Stack.Navigator
+        screenOptions={{ headerShown: false }}
+        initialRouteName="Home"
+      >
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Details" component={Details} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 export default App;
